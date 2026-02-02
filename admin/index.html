@@ -13,7 +13,7 @@
     
     <!-- Custom Styles -->
     <link rel="stylesheet" href="../shared/common-styles.css">
-    <link rel="stylesheet" href="admin-styles.css">
+    <link rel="stylesheet" href="./admin-styles.css">
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -213,8 +213,6 @@
         })();
         */
     </script>
-    <script type="module">
-        import('./search.js').catch(err => console.error('Failed to load search.js:', err));
-    </script>
+    <script src="./search.js" type="module"></script>
 </body>
 </html>
