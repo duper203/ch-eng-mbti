@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Channel Engineering Team | MBTI Analytics</title>
+    <meta name="description" content="Channel Engineering Team MBTI analytics dashboard">
+    
+    <!-- CSS Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="shared/common-styles.css">
+    <link rel="stylesheet" href="shared/dashboard-styles.css">
+
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-1">
+                    <a href="/" class="nav-link active">🏠 Dashboard</a>
+                    <a href="/admin" class="nav-link">🔍 Find Profile & Matching</a>
+                </div>
+                <div>
+                    <span class="badge">PUBLIC</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Header -->
+    <header class="py-16 border-b border-black border-opacity-10">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="text-center">
+                <h1 class="section-title">
+                    Channel Engineering Team
+                </h1>
+                <p class="section-subtitle max-w-2xl mx-auto" style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">
+                    채널 엔지니어팀은 어떤 MBTI가 제일 많을까요?
+                </p>
+                <p class="text-sm text-black/50 max-w-2xl mx-auto" style="line-height: 1.8;">
+                    현재 약 80명의 엔지니어분들이 계시지만 50명 조금 넘는 정도를 직접 모았습니다.<br>
+                    혹시 검색했는데 본인의 MBTI가 없으신가요? 아직 저와 대화를 많이 안해보셨던 것 같네요 ㅋㅋㅋ<br>
+                    직접 입력해주시면 빠르게 반영하겠습니다! 🙏<br><br>
+                    <span style="font-size: 0.9em; opacity: 0.8;">
+                        ⚠️ 해당 프로젝트는 순수 재미로만 봐주세요! <br>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 max-w-6xl pb-16">
+        
+        <!-- Overall MBTI Distribution with Top 5 -->
+        <section class="mb-16 fade-in" style="margin-top: 3rem;">
+            <div class="card p-8">
+                <h3 class="card-title">
+                    Overall MBTI Distribution
+                </h3>
+                
+                <!-- Summary Stats -->
+                <div class="stat-grid mb-8">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="metric-number" id="totalCount">-</div>
+                        <div class="metric-label">Total Members</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-crown"></i></div>
+                        <div class="metric-number" id="mostCommonMbti">-</div>
+                        <div class="metric-label">Most Common</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-brain"></i></div>
+                        <div class="metric-number" id="ieRatio">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-eye"></i></div>
+                        <div class="metric-number" id="nsRatio">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-balance-scale"></i></div>
+                        <div class="metric-number" id="tfRatio">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-sliders-h"></i></div>
+                        <div class="metric-number" id="jpRatio">-</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <!-- Chart -->
+                    <div class="flex flex-col items-center justify-center">
+                        <canvas id="overallChart" style="max-height: 350px;"></canvas>
+                    </div>
+                    
+                    <!-- Top 5 MBTI -->
+                    <div class="flex flex-col justify-center">
+                        <h4 class="text-lg font-semibold text-black mb-4 flex items-center justify-center gap-2">
+                            <span>Top 5 MBTI Types</span>
+                        </h4>
+                        <div id="topMbtiList" class="flex flex-col items-center">
+                            <!-- Top 5 MBTI will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Distribution -->
+        <section class="mb-16 fade-in">
+            <div class="card p-8">
+                <h3 class="card-title mb-6">
+                    Team MBTI Distribution
+                </h3>
+                <div class="mb-6 flex justify-center">
+                    <select id="teamSelect" class="select-modern" style="max-width: 200px;">
+                        <option value="all">All Teams</option>
+                        <option value="Frontend">Frontend</option>
+                        <option value="Backend">Backend</option>
+                        <option value="AI">AI</option>
+                        <option value="Mobile">Mobile</option>
+                        <option value="FDE">FDE</option>
+                        <option value="ETC">etc.</option>    
+                    </select>
+                </div>
+                <div class="grid grid-cols-1 gap-6 items-center">
+                    <div id="teamStats" class="space-y-3">
+                        <!-- Team statistics will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-black border-opacity-10">
+        <div class="container mx-auto px-6 max-w-6xl text-center">
+            <p class="text-black/60 text-sm">
+                <i class="fas fa-lock"></i> Internal Platform · Developer Relations
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 메인 대시보드는 비밀번호 불필요 (누구나 접근 가능)
+    </script>
+    <script type="module" src="./shared/stats-common.js"></script>
+</body>
+</html>
