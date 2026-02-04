@@ -155,4 +155,3 @@ ${matches.map(m => `- ${m.name} (${m.mbti}, ${m.team})`).join('\n')}
   
   return `${baseUrl}?${params.toString()}`;
 }
-

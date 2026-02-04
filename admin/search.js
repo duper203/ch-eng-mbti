@@ -1,4 +1,3 @@
-// Search & Matching Page - Refactored
 import { getEngineers } from '../shared/supabase.js';
 import { MBTIMatcher } from './modules/matcher.js';
 import { SearchModule } from './modules/search.js';
@@ -21,9 +20,6 @@ class SearchPage {
     this.setupEventListeners();
   }
 
-  /**
-   * 엔지니어 데이터 로드
-   */
   async loadEngineerData() {
     try {
       const data = await getEngineers();
@@ -37,44 +33,35 @@ class SearchPage {
     }
   }
 
-  /**
-   * 이벤트 리스너 설정
-   */
   setupEventListeners() {
-    // 검색 버튼
     const searchBtn = document.getElementById('findMyInfoBtn');
     const searchInput = document.getElementById('searchNameInput');
     
-    if (searchBtn) {
-      searchBtn.addEventListener('click', () => this.handleSearch());
-    }
-    if (searchInput) {
-      searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') this.handleSearch();
-      });
-    }
+    if (searchBtn) searchBtn.addEventListener('click', () => this.handleSearch());
+    if (searchInput) searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') this.handleSearch();
+    });
 
-    // 제출 버튼
+    const mbtiSearchBtn = document.getElementById('findByMbtiBtn');
+    const mbtiSelect = document.getElementById('searchMbtiSelect');
+    
+    if (mbtiSearchBtn) mbtiSearchBtn.addEventListener('click', () => this.handleMBTISearch());
+    if (mbtiSelect) mbtiSelect.addEventListener('change', () => this.handleMBTISearch());
+
     const submitBtn = document.getElementById('submitAddRequestBtn');
-    if (submitBtn) {
-      submitBtn.addEventListener('click', () => this.handleSubmit());
-    }
+    if (submitBtn) submitBtn.addEventListener('click', () => this.handleSubmit());
 
-    // 모달 닫기
-    const closeModal = document.getElementById('closeModal');
+    const closeModalBtn = document.getElementById('closeModal');
     const modal = document.getElementById('detailModal');
     
-    if (closeModal && modal) {
-      closeModal.addEventListener('click', () => hideModal());
+    if (closeModalBtn && modal) {
+      closeModalBtn.addEventListener('click', () => hideModal());
       modal.addEventListener('click', (e) => {
         if (e.target === modal) hideModal();
       });
     }
   }
 
-  /**
-   * 검색 핸들러
-   */
   handleSearch() {
     const searchInput = document.getElementById('searchNameInput');
     if (!searchInput) return;
@@ -87,14 +74,12 @@ class SearchPage {
       return;
     }
 
-    // 검색 결과 렌더링
     this.searchModule.renderSearchResult(
       result,
       searchName,
       (name, team) => this.uiModule.showRequestForm(name, team)
     );
 
-    // 완전한 프로필이면 매칭 계산
     if (result && result.mbti && result.mbti !== 'NULL' && result.mbti.length === 4) {
       this.currentUser = result;
       const matches = this.matcher.calculateMatches(result);
@@ -105,9 +90,22 @@ class SearchPage {
     }
   }
 
-  /**
-   * 제출 핸들러
-   */
+  handleMBTISearch() {
+    const mbtiSelect = document.getElementById('searchMbtiSelect');
+    if (!mbtiSelect) return;
+
+    const mbtiType = mbtiSelect.value;
+    const results = this.searchModule.findByMBTI(mbtiType);
+
+    this.searchModule.renderMBTISearchResult(results, mbtiType);
+
+    const nameResultDiv = document.getElementById('myInfoResult');
+    if (nameResultDiv) nameResultDiv.classList.add('hidden');
+    
+    this.uiModule.hideMatchingSection();
+    this.uiModule.hideRequestForm();
+  }
+
   async handleSubmit() {
     const name = document.getElementById('addName')?.value.trim();
     const team = document.getElementById('addTeam')?.value;
@@ -119,7 +117,6 @@ class SearchPage {
     }
 
     try {
-      // FormSubmit으로 이메일 전송
       const formData = new FormData();
       formData.append('name', name);
       formData.append('team', team);
@@ -132,9 +129,7 @@ class SearchPage {
       const response = await fetch(EMAIL_CONFIG.endpoint, {
         method: 'POST',
         body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       });
 
       const result = await response.json();
@@ -152,12 +147,8 @@ class SearchPage {
   }
 }
 
-// Initialize
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    new SearchPage();
-  });
+  document.addEventListener('DOMContentLoaded', () => new SearchPage());
 } else {
-  // DOM이 이미 로드됨 (dynamic import로 늦게 로드된 경우)
   new SearchPage();
 }

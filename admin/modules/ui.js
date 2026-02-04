@@ -42,7 +42,7 @@ export class UIModule {
         </div>
         <h3 style="font-size: 1.3rem; font-weight: 700; color: var(--black); margin-bottom: 1.5rem;">${item.title}</h3>
         <h4 class="match-card-nickname">${item.name}</h4>
-        <p class="match-card-hint">👆 Click to see details</p>
+        <p class="match-card-hint">👀 누구일까요?<br>(탭해서 확인)</p>
       </div>
     `).join('');
 
@@ -154,4 +154,3 @@ export class UIModule {
     this.hideMatchingSection();
   }
 }
-

@@ -7,7 +7,8 @@ export const TEAMS = [
   'AI',
   'Frontend',
   'Mobile',
-  'Backend'
+  'Backend',
+  'DevOps'
 ];
 
 // MBTI 타입 목록
@@ -79,4 +80,3 @@ export const MBTI_AXIS_NAMES = {
   TF: '판단(T/F)',
   JP: '정리(J/P)'
 };
-

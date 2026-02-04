@@ -26,7 +26,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-1">
                     <a href="/" class="nav-link active">🏠 Dashboard</a>
-                    <a href="/admin" class="nav-link">🔍 Find Profile & Matching</a>
+                    <a href="/admin" class="nav-link">👥 Matching</a>
                 </div>
                 <div>
                     <span class="badge">PUBLIC</span>
@@ -36,22 +36,14 @@
     </nav>
     
     <!-- Header -->
-    <header class="py-16 border-b border-black border-opacity-10">
+    <header class="py-8 border-b border-black border-opacity-10">
         <div class="container mx-auto px-6 max-w-6xl">
             <div class="text-center">
-                <h1 class="section-title">
-                    Channel Engineering Team
+                <h1 class="section-title" style="line-height: 1.3;">
+                    채널 엔지니어팀은<br class="md:hidden"> 어떤 MBTI가 제일 많을까요?
                 </h1>
-                <p class="section-subtitle max-w-2xl mx-auto" style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">
-                    채널 엔지니어팀은 어떤 MBTI가 제일 많을까요?
-                </p>
-                <p class="text-sm text-black/50 max-w-2xl mx-auto" style="line-height: 1.8;">
-                    현재 약 80명의 엔지니어분들이 계시지만 50명 조금 넘는 정도를 직접 모았습니다.<br>
-                    혹시 검색했는데 본인의 MBTI가 없으신가요? 아직 저와 대화를 많이 안해보셨던 것 같네요 ㅋㅋㅋ<br>
-                    직접 입력해주시면 빠르게 반영하겠습니다! 🙏<br><br>
-                    <span style="font-size: 0.9em; opacity: 0.8;">
-                        ⚠️ 해당 프로젝트는 순수 재미로만 봐주세요! <br>
-                    </span>
+                <p class="section-subtitle max-w-2xl mx-auto" style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0;">
+                    ⚠️ 해당 프로젝트는 순수 재미로만 봐주세요!
                 </p>
             </div>
         </div>
@@ -60,88 +52,181 @@
     <!-- Main Content -->
     <main class="container mx-auto px-6 max-w-6xl pb-16">
         
-        <!-- Overall MBTI Distribution with Top 5 -->
-        <section class="mb-16 fade-in" style="margin-top: 3rem;">
+        <!-- Summary Section -->
+        <section class="mb-12 fade-in" style="margin-top: 3rem;">
             <div class="card p-8">
-                <h3 class="card-title">
-                    Overall MBTI Distribution
-                </h3>
+                <h3 class="summary-title mb-8">📊 팀 요약</h3>
                 
-                <!-- Summary Stats -->
-                <div class="stat-grid mb-8">
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-users"></i></div>
-                        <div class="metric-number" id="totalCount">-</div>
-                        <div class="metric-label">Total Members</div>
+                <!-- Top 3 Key Metrics -->
+                <div class="summary-grid mb-8">
+                    <div class="summary-card highlight">
+                        <div class="summary-icon">👥</div>
+                        <div class="summary-number" id="totalCount">-</div>
+                        <div class="summary-label">Total Members</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-crown"></i></div>
-                        <div class="metric-number" id="mostCommonMbti">-</div>
-                        <div class="metric-label">Most Common</div>
+                    <div class="summary-card highlight">
+                        <div class="summary-icon">🌱</div>
+                        <div class="summary-number" id="mostCommonMbti">-</div>
+                        <div class="summary-label">Most Common</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-brain"></i></div>
-                        <div class="metric-number" id="ieRatio">-</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-eye"></i></div>
-                        <div class="metric-number" id="nsRatio">-</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-balance-scale"></i></div>
-                        <div class="metric-number" id="tfRatio">-</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-sliders-h"></i></div>
-                        <div class="metric-number" id="jpRatio">-</div>
+                    <div class="summary-card">
+                        <div class="summary-label" style="margin-bottom: 0.75rem;">Top 3 Ranking</div>
+                        <div id="top3Ranking" class="top3-ranking">
+                            <!-- Top 3 will be populated here -->
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <!-- Chart -->
-                    <div class="flex flex-col items-center justify-center">
-                        <canvas id="overallChart" style="max-height: 350px;"></canvas>
+                <!-- Participation Encouragement -->
+                <div class="participation-message">
+                    현재 채널에는 약 80명의 엔지니어분들이 계시지만, <strong id="totalCount2">-</strong>명만 참여 중입니다!<br>
+                    혹시 검색 페이지에서 본인의 MBTI가 없으신가요? 아직 제가 대화를 많이 못해봤나 봐요 ㅋㅋㅋ<br>
+                    <a href="/admin" style="color: #2563eb; text-decoration: underline; font-weight: 500;">입력해주시면 빠르게 반영하겠습니다 🙏</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Metrics: Personality Gauge Bars -->
+        <section class="mb-12 fade-in">
+            <div class="card p-8">
+                <h3 class="summary-title mb-6">⚖️ 우리 팀은 어떤 성향이 더 강할까요?</h3>
+                <p class="section-description">팀의 성향 분포를 한눈에 확인하세요</p>
+                
+                <div class="gauge-container">
+                    <!-- I vs E -->
+                    <div class="gauge-row" id="gaugeRowIE">
+                        <div class="gauge-label left" id="labelLeftIE">
+                            <span class="gauge-icon">🧘</span>
+                            <span class="gauge-text">I</span>
+                        </div>
+                        <div class="gauge-bar-wrapper">
+                            <div class="gauge-bar">
+                                <div class="gauge-fill left" id="gaugeLeftIE" style="width: 50%"></div>
+                                <div class="gauge-fill right" id="gaugeRightIE" style="width: 50%"></div>
+                            </div>
+                            <div class="gauge-values">
+                                <span class="value-left" id="valueLeftIE">-</span>
+                                <span class="value-right" id="valueRightIE">-</span>
+                            </div>
+                        </div>
+                        <div class="gauge-label right" id="labelRightIE">
+                            <span class="gauge-text">E</span>
+                            <span class="gauge-icon">📢</span>
+                        </div>
                     </div>
-                    
-                    <!-- Top 5 MBTI -->
-                    <div class="flex flex-col justify-center">
-                        <h4 class="text-lg font-semibold text-black mb-4 flex items-center justify-center gap-2">
-                            <span>Top 5 MBTI Types</span>
-                        </h4>
-                        <div id="topMbtiList" class="flex flex-col items-center">
-                            <!-- Top 5 MBTI will be populated here -->
+
+                    <!-- N vs S -->
+                    <div class="gauge-row" id="gaugeRowNS">
+                        <div class="gauge-label left" id="labelLeftNS">
+                            <span class="gauge-icon">💡</span>
+                            <span class="gauge-text">N</span>
+                        </div>
+                        <div class="gauge-bar-wrapper">
+                            <div class="gauge-bar">
+                                <div class="gauge-fill left" id="gaugeLeftNS" style="width: 50%"></div>
+                                <div class="gauge-fill right" id="gaugeRightNS" style="width: 50%"></div>
+                            </div>
+                            <div class="gauge-values">
+                                <span class="value-left" id="valueLeftNS">-</span>
+                                <span class="value-right" id="valueRightNS">-</span>
+                            </div>
+                        </div>
+                        <div class="gauge-label right" id="labelRightNS">
+                            <span class="gauge-text">S</span>
+                            <span class="gauge-icon">👁️</span>
+                        </div>
+                    </div>
+
+                    <!-- F vs T -->
+                    <div class="gauge-row" id="gaugeRowFT">
+                        <div class="gauge-label left" id="labelLeftFT">
+                            <span class="gauge-icon">💖</span>
+                            <span class="gauge-text">F</span>
+                        </div>
+                        <div class="gauge-bar-wrapper">
+                            <div class="gauge-bar">
+                                <div class="gauge-fill left" id="gaugeLeftFT" style="width: 50%"></div>
+                                <div class="gauge-fill right" id="gaugeRightFT" style="width: 50%"></div>
+                            </div>
+                            <div class="gauge-values">
+                                <span class="value-left" id="valueLeftFT">-</span>
+                                <span class="value-right" id="valueRightFT">-</span>
+                            </div>
+                        </div>
+                        <div class="gauge-label right" id="labelRightFT">
+                            <span class="gauge-text">T</span>
+                            <span class="gauge-icon">🧠</span>
+                        </div>
+                    </div>
+
+                    <!-- P vs J -->
+                    <div class="gauge-row" id="gaugeRowPJ">
+                        <div class="gauge-label left" id="labelLeftPJ">
+                            <span class="gauge-icon">🎨</span>
+                            <span class="gauge-text">P</span>
+                        </div>
+                        <div class="gauge-bar-wrapper">
+                            <div class="gauge-bar">
+                                <div class="gauge-fill left" id="gaugeLeftPJ" style="width: 50%"></div>
+                                <div class="gauge-fill right" id="gaugeRightPJ" style="width: 50%"></div>
+                            </div>
+                            <div class="gauge-values">
+                                <span class="value-left" id="valueLeftPJ">-</span>
+                                <span class="value-right" id="valueRightPJ">-</span>
+                            </div>
+                        </div>
+                        <div class="gauge-label right" id="labelRightPJ">
+                            <span class="gauge-text">J</span>
+                            <span class="gauge-icon">📋</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Team Distribution -->
+        <!-- Team MBTI Distribution -->
         <section class="mb-16 fade-in">
             <div class="card p-8">
-                <h3 class="card-title mb-6">
-                    Team MBTI Distribution
-                </h3>
-                <div class="mb-6 flex justify-center">
-                    <select id="teamSelect" class="select-modern" style="max-width: 200px;">
-                        <option value="all">All Teams</option>
+                <h3 class="summary-title mb-6">📈 팀별 MBTI 분포</h3>
+                <p class="section-description">전체 엔지니어 또는 특정 팀의 MBTI 분포를 확인하세요</p>
+                
+                <div class="mb-8 flex justify-center">
+                    <select id="teamSelect" class="select-modern" style="max-width: 250px;">
+                        <option value="all">전체 엔지니어</option>
                         <option value="Frontend">Frontend</option>
                         <option value="Backend">Backend</option>
                         <option value="AI">AI</option>
                         <option value="Mobile">Mobile</option>
                         <option value="FDE">FDE</option>
+                        <option value="DevOps">DevOps</option>
                         <option value="ETC">etc.</option>    
                     </select>
                 </div>
-                <div class="grid grid-cols-1 gap-6 items-center">
-                    <div id="teamStats" class="space-y-3">
-                        <!-- Team statistics will be populated here -->
-                    </div>
+
+                <!-- Click Hint -->
+                <div class="click-hint">
+                    💡 <strong>MBTI를 클릭하면 해당하는 사람들을 볼 수 있어요!</strong>
+                </div>
+                
+                <div id="mbtiDistributionList" class="distribution-list">
+                    <!-- Distribution bars will be populated here -->
                 </div>
             </div>
         </section>
 
     </main>
+
+    <!-- MBTI People List Modal -->
+    <div id="mbtiPeopleModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-6" style="backdrop-filter: blur(8px);">
+        <div class="modal-people max-w-2xl w-full relative">
+            <button id="closePeopleModal" class="absolute top-4 right-4 text-gray-600 hover:text-black transition-colors z-10">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <div id="modalPeopleContent">
+                <!-- People list will be populated here -->
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="py-8 border-t border-black border-opacity-10">

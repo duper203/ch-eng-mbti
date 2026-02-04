@@ -310,3 +310,68 @@ label {
   transform: translateY(0);
 }
 
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .nav-bar {
+    padding: 0.5rem 0;
+  }
+
+  .nav-link {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    line-height: 1.3;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem !important;
+  }
+
+  .card {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .input-field,
+  .select-modern {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .btn-primary {
+    padding: 14px 24px;
+    font-size: 0.95rem;
+  }
+
+  header {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-link {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem !important;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  header {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+}
+
